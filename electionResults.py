@@ -96,9 +96,13 @@ def Sort_Tuple_called(tup):
   
     # reverse = None (Sorts in Ascending order)  
     # key is set to sort using second element of  
-    # sublist lambda has been used  
-    tup.sort(key = lambda x: int(x[1]), reverse=True)  
-    return tup
+    # sublist lambda has been used
+    newtup = list()
+    for i in tup:
+        if int(i[1]) != 0:
+            newtup.append(i)
+    newtup.sort(key = lambda x: int(x[1]), reverse=True)  
+    return newtup
 
 def track_rahul():
     d = requests.get('http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS2437.htm')
@@ -106,9 +110,13 @@ def track_rahul():
     td = soup.findAll('td')
     irani = int(td[31].string)
     gandhi = int(td[24].string)
+    rahulPercent = float(td[32].string)/100.0
+    totalVotesDone = int(gandhi/rahulPercent)
     trail = 'green'
     lead = 'red'
+    totalvotes = 508582
     if irani > gandhi:
         print('Rahul Gandhi is Trailing in Amethi by ','%s' %(fg(trail)),irani - gandhi,'%s' % (attr('reset'))," Votes",end="\n")
     else:
         print('Rahul Gandhi is Leading in Amethi by ','%s' %(fg(trail)),irani - gandhi,'%s' % (attr('reset'))," Votes",end="\n")
+    print('Approx Votes Counting Remaining in Amethi:','%s' % (fg('magenta')),totalvotes - totalVotesDone,'%s' % (attr('reset')))
