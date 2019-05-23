@@ -30,6 +30,10 @@ def start():
             print("\nCalled: \n")
             prprnt(newListCalled[0:10])
         print('\n\nTotal: 542, Called: ',called(data[1:]))
+        try:
+            track_rahul()
+        except Exception as e:
+            pass
         time.sleep(30)
 
 def getData(delay = 1):
@@ -95,3 +99,16 @@ def Sort_Tuple_called(tup):
     # sublist lambda has been used  
     tup.sort(key = lambda x: int(x[1]), reverse=True)  
     return tup
+
+def track_rahul():
+    d = requests.get('http://results.eci.gov.in/pc/en/constituencywise/ConstituencywiseS2437.htm')
+    soup = BeautifulSoup(d.text, 'html.parser')
+    td = soup.findAll('td')
+    irani = int(td[31].string)
+    gandhi = int(td[24].string)
+    trail = 'green'
+    lead = 'red'
+    if irani > gandhi:
+        print('Rahul Gandhi is Trailing in Amethi by ','%s' %(fg(trail)),irani - gandhi,'%s' % (attr('reset'))," Votes",end="\n")
+    else:
+        print('Rahul Gandhi is Leading in Amethi by ','%s' %(fg(trail)),irani - gandhi,'%s' % (attr('reset'))," Votes",end="\n")
