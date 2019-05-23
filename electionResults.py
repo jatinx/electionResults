@@ -10,7 +10,7 @@ def start():
         d = requests.get('https://results.eci.gov.in/pc/en/partywise/index.htm')
         soup = BeautifulSoup(d.text, 'html.parser')
         td = soup.findAll('td')
-        useable = td[15:159]
+        useable = td[15:151]
         data = [('Name', 'Won', 'Leading','Total'),]
         t = list()
         for i, item in enumerate(useable):
@@ -20,8 +20,14 @@ def start():
                 t = list()
         sortdata = Sort_Tuple(data[1:])
         newList = [data[0]] + sortdata
+        sdcalled = Sort_Tuple_called(data[1:])
+        newListCalled = [data[0]] + sdcalled
         os.system('clear')
+        print("Leading: ")
         prprnt(newList[0:15])
+        if called(data[1:]) > 0: 
+            print("\nCalled: \n")
+            prprnt(newListCalled[0:10])
         print('\n\nTotal: 542, Called: ',called(data[1:]))
         time.sleep(30)
 
@@ -66,4 +72,12 @@ def Sort_Tuple(tup):
     # key is set to sort using second element of  
     # sublist lambda has been used  
     tup.sort(key = lambda x: int(x[2]), reverse=True)  
+    return tup
+
+def Sort_Tuple_called(tup):  
+  
+    # reverse = None (Sorts in Ascending order)  
+    # key is set to sort using second element of  
+    # sublist lambda has been used  
+    tup.sort(key = lambda x: int(x[1]), reverse=True)  
     return tup
