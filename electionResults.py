@@ -7,8 +7,9 @@ from colored import fg, bg, attr
 
 def start():
     while 1:
-        d = requests.get('https://results.eci.gov.in/pc/en/partywise/index.htm')
-        soup = BeautifulSoup(d.text, 'html.parser')
+        #d = requests.get('https://results.eci.gov.in/pc/en/partywise/index.htm')
+        d = getData()
+        soup = BeautifulSoup(d, 'html.parser')
         td = soup.findAll('td')
         useable = td[15:151]
         data = [('Name', 'Won', 'Leading','Total'),]
@@ -30,6 +31,16 @@ def start():
             prprnt(newListCalled[0:10])
         print('\n\nTotal: 542, Called: ',called(data[1:]))
         time.sleep(30)
+
+def getData():
+    try:
+        d = requests.get('https://results.eci.gov.in/pc/en/partywise/index.htm')
+        if d.status_code != 200:
+            return getData()
+        return d.text
+    except Exception as e:
+        print('ECI Website Down, trying again')
+        return getData()
 
 def prprnt(data):
     for ii, i in enumerate(data):
