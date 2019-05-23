@@ -32,15 +32,18 @@ def start():
         print('\n\nTotal: 542, Called: ',called(data[1:]))
         time.sleep(30)
 
-def getData():
+def getData(delay = 1):
     try:
         d = requests.get('https://results.eci.gov.in/pc/en/partywise/index.htm')
         if d.status_code != 200:
-            return getData()
+            print('Something wrong with eci website, trying again in ', delay, ' seconds..')
+            time.sleep(delay)
+            return getData(delay*2)
         return d.text
     except Exception as e:
-        print('ECI Website Down, trying again')
-        return getData()
+        print('ECI Website Down, trying again in ',delay,' seconds..')
+        time.sleep(delay)
+        return getData(delay*2)
 
 def prprnt(data):
     for ii, i in enumerate(data):
